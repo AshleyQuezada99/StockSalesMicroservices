@@ -17,7 +17,6 @@ namespace Sale.Data
             modelBuilder.Entity<Sales>().Property(s => s.ProductId).IsRequired();
             modelBuilder.Entity<Sales>().Property(s => s.Amount).IsRequired();
             modelBuilder.Entity<Sales>().Property(s => s.DateSale).HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<Sales>().HasOne(s => s.Product).WithMany().HasForeignKey(s => s.ProductId);
             base.OnModelCreating(modelBuilder);
         }
 

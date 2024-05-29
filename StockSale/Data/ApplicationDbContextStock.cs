@@ -3,9 +3,9 @@ using Stock.Entities;
 
 namespace Stock.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContextStock : DbContext
     {
-        public ApplicationDbContext(DbContextOptions options) : base(options) { }
+        public ApplicationDbContextStock(DbContextOptions options) : base(options) { }
 
         public DbSet<Products> Products { get; set; }
 

@@ -3,16 +3,18 @@ using Stock.Data;
 using Stock.Entities;
 using Stock.Repository.IRepository;
 
+
 namespace Stock.Repository
 {
     public class ProductsRepository : IProductsRepository
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly ApplicationDbContextStock _dbContext;
 
-        public ProductsRepository(ApplicationDbContext dbContext)
+        public ProductsRepository(ApplicationDbContextStock dbContext)
         {
             _dbContext = dbContext;
         }
+
         public async Task<Products> CreateProduct(Products product)
         {
             if (product == null)
@@ -20,6 +22,7 @@ namespace Stock.Repository
                 throw new ArgumentNullException(nameof(product));
             }
             await _dbContext.Products.AddAsync(product);
+            await _dbContext.SaveChangesAsync();
             return product;
         }
 
@@ -33,6 +36,7 @@ namespace Stock.Repository
             }
 
             _dbContext.Products.Remove(deleteId);
+            await _dbContext.SaveChangesAsync();
             return true;
         }
 
@@ -55,7 +59,7 @@ namespace Stock.Repository
 
         public async Task<bool> SaveChanges()
         {
-           return (_dbContext.SaveChanges() >= 0);
+            return (await _dbContext.SaveChangesAsync() >= 0);
         }
 
         public async Task<Products> UpdateProduct(Products product)

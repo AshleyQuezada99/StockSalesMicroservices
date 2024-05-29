@@ -1,0 +1,36 @@
+services:
+  sale:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionStrings__DefaultConnection=Server=sql_container,1433;Database=SalesDB;User Id=sa;Password=Your_password123;TrustServerCertificate=True;
+      - RabbitMQ__HostName=rabbitmq
+    ports:
+      - "5000:80"   # Map local port 5000 to container port 80
+      - "5001:443"  # Map local port 5001 to container port 443
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - sql_container
+      - rabbitmq
+    networks:
+      - mynetwork
+
+  stock:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionStrings__DefaultConnection=Server=sql_container,1433;Database=StockDB;User Id=sa;Password=Your_password123;TrustServerCertificate=True;
+      - RabbitMQ__HostName=rabbitmq
+    ports:
+      - "5002:80"   # Map local port 5002 to container port 80
+      - "5003:443"  # Map local port 5003 to container port 443
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - sql_container
+      - rabbitmq
+    networks:
+      - mynetwork

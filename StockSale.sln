@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stock", "StockSale\Stock.csproj", "{60ADD01C-039D-4ACE-8A87-44FB8B251B04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stock", "StockSale\Stock.csproj", "{60ADD01C-039D-4ACE-8A87-44FB8B251B04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sale", "Sale\Sale.csproj", "{83B7F873-CAFE-43C8-915A-411CEAB85846}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sale", "Sale\Sale.csproj", "{83B7F873-CAFE-43C8-915A-411CEAB85846}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockSale.RabbitMQ.Bus", "StockSale.RabbitMQ.Bus\StockSale.RabbitMQ.Bus.csproj", "{CC4F5E62-09B0-49DD-9A87-A954286A4BDC}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{8F92285A-4CB1-4C77-9079-012EF3AD1C41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{83B7F873-CAFE-43C8-915A-411CEAB85846}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83B7F873-CAFE-43C8-915A-411CEAB85846}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83B7F873-CAFE-43C8-915A-411CEAB85846}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC4F5E62-09B0-49DD-9A87-A954286A4BDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC4F5E62-09B0-49DD-9A87-A954286A4BDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC4F5E62-09B0-49DD-9A87-A954286A4BDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC4F5E62-09B0-49DD-9A87-A954286A4BDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F92285A-4CB1-4C77-9079-012EF3AD1C41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F92285A-4CB1-4C77-9079-012EF3AD1C41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F92285A-4CB1-4C77-9079-012EF3AD1C41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F92285A-4CB1-4C77-9079-012EF3AD1C41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
