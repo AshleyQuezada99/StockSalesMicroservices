@@ -1,37 +1,30 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using RabbitMQ.Client;
 using Sale.Data;
 using Sale.Repository;
 using Sale.Repository.IRepository;
-using Microsoft.Extensions.Options;
-using Stock.Entities;
-using StockSale.RabbitMQ.Bus.BusRabbit;
-using StockSale.RabbitMQ.Bus.Implement;
 using MediatR;
-using Stock.Repository.IRepository;
+using Stock.HandlerRabbit;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Conexion DB
 builder.Services.AddDbContext<ApplicationDbContext>(opt =>
 {
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("ConexionSql"));
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("ConexionSql"), sqlOptions =>
+    {
+        sqlOptions.EnableRetryOnFailure();
+    });
 });
 
-//Settings RabbitMQ
-builder.Services.AddSingleton<IConnection>(sp =>
+builder.Services.AddSingleton<RabbitMQService>(sp =>
 {
-    var factory = new ConnectionFactory() { HostName = "rabbit-ash-web" };
-    return factory.CreateConnection();
+    // Configura RabbitMQService aquí
+    var hostname = "rabbitmq";
+    var queueName = "test";
+    return new RabbitMQService(hostname, queueName);
 });
-builder.Services.AddSingleton<IRabbitEventBus, RabbitEventBus>();
-builder.Services.AddSingleton(new Dictionary<string, List<Type>>());
-builder.Services.AddSingleton(new List<Type>());
-
-builder.Services.AddTransient<IRabbitEventBus, RabbitEventBus>();
-//Settings MediatR
-builder.Services.AddMediatR(typeof(ISalesRepository).Assembly);
 // Add services to the container.
 builder.Services.AddControllers();
 // Configuración de AutoMapper

@@ -8,6 +8,6 @@ namespace Sale.Entities
         public int ProductId { get; set; }
         public int Amount { get; set; }
         public DateTime DateSale { get; set; }
-        public Products Products { get; set; }
+        //public Products Products { get; set; }
     }
 }

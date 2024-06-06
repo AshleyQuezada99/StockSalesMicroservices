@@ -777,16 +777,6 @@
         "runtime": {
           "Stock.dll": {}
         }
-      },
-      "StockSale.RabbitMQ.Bus/1.0.0": {
-        "dependencies": {
-          "MediatR": "9.0.0",
-          "Newtonsoft.Json": "13.0.3",
-          "RabbitMQ.Client": "6.8.1"
-        },
-        "runtime": {
-          "StockSale.RabbitMQ.Bus.dll": {}
-        }
       }
     }
   },
@@ -1385,11 +1375,6 @@
       "hashPath": "system.windows.extensions.5.0.0.nupkg.sha512"
     },
     "Stock/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "StockSale.RabbitMQ.Bus/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

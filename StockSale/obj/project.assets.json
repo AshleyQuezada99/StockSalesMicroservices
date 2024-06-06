@@ -1392,7 +1392,7 @@
         "dependencies": {
           "MediatR": "9.0.0",
           "Newtonsoft.Json": "13.0.3",
-          "RabbitMQ.Client": "6.0.0"
+          "RabbitMQ.Client": "6.8.1"
         },
         "compile": {
           "bin/placeholder/StockSale.RabbitMQ.Bus.dll": {}

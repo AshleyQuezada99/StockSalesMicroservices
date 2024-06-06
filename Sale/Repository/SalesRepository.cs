@@ -2,12 +2,7 @@
 using Sale.Data;
 using Sale.Entities;
 using Sale.Repository.IRepository;
-using Sale.Data;
-using RabbitMQ.Client;
-using System.Text.Json;
-using System.Text;
-using StockSale.RabbitMQ.Bus.BusRabbit;
-using StockSale.RabbitMQ.Bus.EventsQueue;
+using Stock.HandlerRabbit;
 
 
 
@@ -16,12 +11,12 @@ namespace Sale.Repository
     public class SalesRepository : ISalesRepository
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly IRabbitEventBus _eventBus;
+        private readonly RabbitMQService _rabbitMqService;
 
-        public SalesRepository(ApplicationDbContext dbContext, IRabbitEventBus eventBus)
+        public SalesRepository(ApplicationDbContext dbContext, RabbitMQService rabbitMqService)
         {
             _dbContext = dbContext;
-            _eventBus = eventBus;
+            _rabbitMqService = rabbitMqService;
         }
         public async Task<Sales> CreateSale(Sales sales)
         {
@@ -30,7 +25,7 @@ namespace Sale.Repository
                 throw new ArgumentNullException(nameof(sales));
             }
 
-            var sale = sales.Products;
+            var sale = 0;
             var stock = 1;
 
 
@@ -40,16 +35,16 @@ namespace Sale.Repository
             }
             var finalStock = stock - sales.Amount;
 
-            await _dbContext.Sales.AddAsync(sales);
 
-            // Publicar un evento para actualizar el stock del producto vendido
-            var updateStockEvent = new UpdateStockEvent(sales.ProductId, finalStock);
-            _eventBus.Publish(updateStockEvent);
+            await _dbContext.Sales.AddAsync(sales);
+            await _dbContext.SaveChangesAsync();
+
+            //Publish the event to update the stock sales.ProductId, finalStock
+            _rabbitMqService.PublishStock(sales.ProductId, finalStock);
+
 
             return sales;
         }
-
-       
 
         public async Task<bool> DeleteSale(int id)
         {

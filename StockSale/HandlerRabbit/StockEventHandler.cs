@@ -1,10 +1,10 @@
-﻿using Stock.Repository.IRepository;
-using StockSale.RabbitMQ.Bus.BusRabbit;
-using StockSale.RabbitMQ.Bus.EventsQueue;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Stock.Repository.IRepository;
+
 
 namespace Stock.HandlerRabbit
 {
-    public class StockEventHandler : IEventHandler<UpdateStockEvent>
+    public class StockEventHandler
     {
         private readonly IProductsRepository _productsRepository;
 
@@ -13,19 +13,29 @@ namespace Stock.HandlerRabbit
             _productsRepository = productsRepository;
         }
 
-        public async Task Handle(UpdateStockEvent @event)
+        public async void HandleStockUpdateEvent(object sender, StockUpdateEvent e)
         {
-            // Get the ProdictId
-            var product = await _productsRepository.GetProductById(@event.ProductId);
-
-            if (product != null)
+            try
             {
-                // Update the stock
-                product.Stock = @event.Stock;
+                // Get the product by its ID
+                var product = await _productsRepository.GetProductById(e.ProductId);
 
-                // Save the changes in the DB
-                await _productsRepository.SaveChanges();
+                if (product != null)
+                {
+                    // Update the stock
+                    product.Stock = e.FinalStock;
+
+                    // Save the changes in the database
+                    await _productsRepository.SaveChanges();
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occur during the update process
+                Console.WriteLine($"An error occurred while handling the stock update event: {ex.Message}");
             }
         }
+
     }
 }

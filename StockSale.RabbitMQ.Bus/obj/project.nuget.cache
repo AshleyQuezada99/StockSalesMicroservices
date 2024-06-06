@@ -1,13 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "uZnNujoX7jBN1dgXumfYk1dINGIsbDy/JRkdynFFBb7c9NiHK90nYVaFEPq0Ue2q5aUyiaO9+OvCFqJlKhxBbA==",
+  "dgSpecHash": "JUH//MJrDFLCK7MDWtr9K7fjr11gHNMd1y2yqu9bv68i/tRGQYYb8gBp8e8eHrFlPErc9A78FcKHFdGx/jtLzw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Ashley\\source\\repos\\StockSale\\StockSale.RabbitMQ.Bus\\StockSale.RabbitMQ.Bus.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ashley\\.nuget\\packages\\mediatr\\9.0.0\\mediatr.9.0.0.nupkg.sha512",
     "C:\\Users\\Ashley\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
-    "C:\\Users\\Ashley\\.nuget\\packages\\rabbitmq.client\\6.0.0\\rabbitmq.client.6.0.0.nupkg.sha512",
-    "C:\\Users\\Ashley\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512"
+    "C:\\Users\\Ashley\\.nuget\\packages\\rabbitmq.client\\6.8.1\\rabbitmq.client.6.8.1.nupkg.sha512",
+    "C:\\Users\\Ashley\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512",
+    "C:\\Users\\Ashley\\.nuget\\packages\\system.threading.channels\\7.0.0\\system.threading.channels.7.0.0.nupkg.sha512"
   ],
   "logs": []
 }

@@ -8,17 +8,19 @@ services:
     ports:
       - "1433:1433"
     volumes:
-      - sql_data:/var/opt/mssql
+      - C:\Users\Ashley\Desktop\SQL_Volumes\data:/var/opt/mssql/data
+      - C:\Users\Ashley\Desktop\SQL_Volumes\log:/var/opt/mssql/log
+      - C:\Users\Ashley\Desktop\SQL_Volumes\secrets:/var/opt/mssql/secrets
     networks:
       - mynetwork
 
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
-    hostname: my-rabbit-server
+    hostname: rabbitmq
     ports:
-      - "5672:5672"   # AMQP port
-      - "15672:15672" # Management UI
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - mynetwork
 
@@ -55,6 +57,3 @@ services:
 networks:
   mynetwork:
     driver: bridge
-
-volumes:
-  sql_data:
