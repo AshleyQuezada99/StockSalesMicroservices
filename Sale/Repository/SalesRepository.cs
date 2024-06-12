@@ -2,6 +2,7 @@
 using Sale.Data;
 using Sale.Entities;
 using Sale.Repository.IRepository;
+using Stock.Data;
 using Stock.HandlerRabbit;
 
 
@@ -11,12 +12,14 @@ namespace Sale.Repository
     public class SalesRepository : ISalesRepository
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly ApplicationDbContextStock _dbContextStock;
         private readonly RabbitMQService _rabbitMqService;
 
-        public SalesRepository(ApplicationDbContext dbContext, RabbitMQService rabbitMqService)
+        public SalesRepository(ApplicationDbContext dbContext, RabbitMQService rabbitMqService, ApplicationDbContextStock applicationDbContextStock)
         {
             _dbContext = dbContext;
             _rabbitMqService = rabbitMqService;
+            _dbContextStock = applicationDbContextStock;
         }
         public async Task<Sales> CreateSale(Sales sales)
         {
@@ -25,8 +28,9 @@ namespace Sale.Repository
                 throw new ArgumentNullException(nameof(sales));
             }
 
-            var sale = 0;
-            var stock = 1;
+            var product = await _dbContextStock.Products.FindAsync(sales.ProductId);
+
+            var stock = product.Stock;
 
 
             if (stock <= 0 || sales.Amount > stock)
