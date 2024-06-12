@@ -1,6 +1,10 @@
 name: dockercompose3713164388299852921
 services:
   rabbitmq:
+    command:
+      - rabbitmq-plugins
+      - enable
+      - rabbitmq_management
     container_name: rabbitmq
     hostname: rabbitmq
     image: rabbitmq:3-management
@@ -20,10 +24,11 @@ services:
       context: C:\Users\Ashley\source\repos\StockSale
       dockerfile: Sale/Dockerfile
       args:
-        BUILD_CONFIGURATION: Release
+        BUILD_CONFIGURATION: Debug
       labels:
         com.microsoft.created-by: visual-studio
         com.microsoft.visual-studio.project-name: Sale
+      target: base
     container_name: Sale
     depends_on:
       rabbitmq:
@@ -38,13 +43,15 @@ services:
       - /dev/null
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: "true"
       ASPNETCORE_URLS: https://+:443;http://+:80
       ConnectionStrings__DefaultConnection: Server=sql_container,1433;Database=SalesDB;User Id=sa;Password=Your_password123;TrustServerCertificate=True;
+      DOTNET_USE_POLLING_FILE_WATCHER: "1"
+      NUGET_FALLBACK_PACKAGES: /.nuget/fallbackpackages
       RabbitMQ__HostName: rabbitmq
-    image: sale_image
+    image: sale_image:dev
     labels:
-      com.microsoft.visual-studio.project-name: Sale
-      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /.nuget/packages --additionalProbingPath /.nuget/fallbackpackages  "/app/Sale.dll"'
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /.nuget/packages --additionalProbingPath /.nuget/fallbackpackages  "/app/bin/Debug/net7.0/Sale.dll"'
       com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof dotnet); then kill $$PID; fi"
       com.microsoft.visualstudio.debuggee.program: dotnet
       com.microsoft.visualstudio.debuggee.workingdirectory: /app
@@ -74,8 +81,30 @@ services:
         bind:
           create_host_path: true
       - type: bind
+        source: C:\Users\Ashley\source\repos\StockSale\Sale
+        target: /app
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\Ashley\source\repos\StockSale
+        target: /src
+        bind:
+          create_host_path: true
+      - type: bind
         source: C:\Users\Ashley\vsdbg\vs2017u5
         target: /remote_debugger
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\Ashley\.nuget\packages\
+        target: /.nuget/packages
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages
+        target: /.nuget/fallbackpackages
+        read_only: true
         bind:
           create_host_path: true
       - type: bind
@@ -142,10 +171,11 @@ services:
       context: C:\Users\Ashley\source\repos\StockSale
       dockerfile: StockSale/Dockerfile
       args:
-        BUILD_CONFIGURATION: Release
+        BUILD_CONFIGURATION: Debug
       labels:
         com.microsoft.created-by: visual-studio
         com.microsoft.visual-studio.project-name: Stock
+      target: base
     container_name: Stock
     depends_on:
       rabbitmq:
@@ -160,13 +190,15 @@ services:
       - /dev/null
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: "true"
       ASPNETCORE_URLS: https://+:443;http://+:80
       ConnectionStrings__DefaultConnection: Server=sql_container,1433;Database=StockDB;User Id=sa;Password=Your_password123;TrustServerCertificate=True;
+      DOTNET_USE_POLLING_FILE_WATCHER: "1"
+      NUGET_FALLBACK_PACKAGES: /.nuget/fallbackpackages
       RabbitMQ__HostName: rabbitmq
-    image: stock_image
+    image: stock_image:dev
     labels:
-      com.microsoft.visual-studio.project-name: Stock
-      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /.nuget/packages --additionalProbingPath /.nuget/fallbackpackages  "/app/Stock.dll"'
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /.nuget/packages --additionalProbingPath /.nuget/fallbackpackages  "/app/bin/Debug/net7.0/Stock.dll"'
       com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof dotnet); then kill $$PID; fi"
       com.microsoft.visualstudio.debuggee.program: dotnet
       com.microsoft.visualstudio.debuggee.workingdirectory: /app
@@ -196,8 +228,30 @@ services:
         bind:
           create_host_path: true
       - type: bind
+        source: C:\Users\Ashley\source\repos\StockSale\StockSale
+        target: /app
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\Ashley\source\repos\StockSale
+        target: /src
+        bind:
+          create_host_path: true
+      - type: bind
         source: C:\Users\Ashley\vsdbg\vs2017u5
         target: /remote_debugger
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\Ashley\.nuget\packages\
+        target: /.nuget/packages
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages
+        target: /.nuget/fallbackpackages
+        read_only: true
         bind:
           create_host_path: true
       - type: bind

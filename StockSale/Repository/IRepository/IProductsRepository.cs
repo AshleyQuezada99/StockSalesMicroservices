@@ -12,4 +12,5 @@ namespace Stock.Repository.IRepository
         Task<bool> SaveChanges();
 
     }
+
 }

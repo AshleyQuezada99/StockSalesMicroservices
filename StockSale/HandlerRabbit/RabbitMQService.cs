@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
@@ -13,16 +15,16 @@ namespace Stock.HandlerRabbit
         private readonly string _queueName;
         private IConnection _connection;
         private IModel _channel;
-
-        // Event to handle message reception
-        public event EventHandler<StockUpdateEvent> OnMessageReceived;
-
-        public RabbitMQService(string hostname, string queueName)
+        private readonly IMediator _mediator; // Add a reference to MediatR
+        private readonly IServiceProvider _serviceProvider;
+        public RabbitMQService(string hostname, string queueName, IServiceProvider serviceProvider)
         {
             _hostname = hostname;
             _queueName = queueName;
+            _serviceProvider = serviceProvider;
             CreateConnection();
             StartListening(); // Start listening for messages when creating the connection
+       
         }
 
         private void CreateConnection()
@@ -65,21 +67,31 @@ namespace Stock.HandlerRabbit
         }
 
         // Private method to start listening for messages
-        private void StartListening()
+        private async void StartListening()
         {
             var consumer = new EventingBasicConsumer(_channel);
-            consumer.Received += (model, ea) =>
+            consumer.Received += async (model, ea) =>
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
                 var stockUpdateEvent = JsonConvert.DeserializeObject<StockUpdateEvent>(message);
-                OnMessageReceived?.Invoke(this, stockUpdateEvent);
+
+                // Create a new scope to resolve IMediator
+                using (var scope = _serviceProvider.CreateScope())
+                {
+                    var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+                    await mediator.Publish(stockUpdateEvent);
+                }
             };
 
             _channel.BasicConsume(queue: _queueName,
                                   autoAck: true,
                                   consumer: consumer);
+
+            // Log to verify the event subscription
+            Console.WriteLine(" [x] StartListening - OnMessageReceived subscribed");
         }
+
 
         // Method to release resources
         public void Dispose()
@@ -89,7 +101,7 @@ namespace Stock.HandlerRabbit
         }
     }
 
-    public class StockUpdateEvent
+    public class StockUpdateEvent : INotification
     {
         public int ProductId { get; set; }
         public int FinalStock { get; set; }

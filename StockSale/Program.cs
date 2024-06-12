@@ -14,9 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContextStock>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("ConexionSqlStock"));
 });
-
-builder.Services.AddSingleton(new Dictionary<string, List<Type>>());
-builder.Services.AddSingleton(new List<Type>());
+;
 
 // Configure AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -28,6 +26,7 @@ builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthorization();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 

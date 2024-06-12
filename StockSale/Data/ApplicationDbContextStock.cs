@@ -5,7 +5,7 @@ namespace Stock.Data
 {
     public class ApplicationDbContextStock : DbContext
     {
-        public ApplicationDbContextStock(DbContextOptions options) : base(options) { }
+        public ApplicationDbContextStock(DbContextOptions<ApplicationDbContextStock> options) : base(options) { }
 
         public DbSet<Products> Products { get; set; }
 
